@@ -14,8 +14,12 @@ import java.util.Optional;
 @Slf4j
 public class TodoServiceImpl implements TodoService {
 
+    private final TodoRepository todoRepository;
+
     @Autowired
-    private TodoRepository todoRepository;
+    public TodoServiceImpl(TodoRepository todoRepository) {
+        this.todoRepository = todoRepository;
+    }
 
     @Override
     public List<TodoItem> getTodoItems() {
@@ -25,7 +29,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public TodoItem findById(long todoId) {
-        log.info("Find todo item for id: " + todoId);
+        log.info("Find todo item where id=" + todoId);
         Optional<TodoItem> todoItem = todoRepository.findById(todoId);
 
         if (!todoItem.isPresent()) {
@@ -39,12 +43,14 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public TodoItem create(TodoItem todoItem) {
-        return null;
+    public TodoItem createOrUpdate(TodoItem todoItem) {
+        log.info("Create new todo item");
+        return this.todoRepository.save(todoItem);
     }
 
     @Override
     public void deleteItem(long todoId) {
-
+        log.info("Delete todo item where id=" + todoId);
+        this.todoRepository.deleteById(todoId);
     }
 }

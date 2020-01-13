@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Data
@@ -24,16 +26,24 @@ public class TodoItem {
     private long id;
 
     @Getter @Setter
+    @ApiModelProperty("name")
+    @NotNull
+    @Size(min = 2, max = 20, message = "Name should be between 2 - 20 chars")
+    private String name;
+
+    @Getter @Setter
+    @ApiModelProperty("details")
+    @Size(min = 2, max = 100, message = "Details should be between 2 - 100 chars")
+    private String details;
+
+    @Getter @Setter
     @ApiModelProperty(value = "done", notes = "Marked as done or not")
     private boolean done;
 
     @Getter @Setter
-    @ApiModelProperty("details")
-    private String details;
-
-    @Getter @Setter
-    @ApiModelProperty("created at")
-    private LocalDateTime createdAt;
+    @ApiModelProperty("scheduled date and time")
+    @NotNull
+    private LocalDateTime scheduledDateTime;
 
     @Getter @Setter
     @ApiModelProperty("Completed at")
