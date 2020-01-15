@@ -43,11 +43,9 @@ public class TodoController {
         return ResponseEntity.created(newTodoItemLocation).build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<String> updateTodo(
-            @PathVariable Long id,
-            @RequestBody TodoItem todoItem) {
-        TodoItem foundTodo = this.todoService.findById(id);
+    @PutMapping
+    public ResponseEntity<String> updateTodo(@RequestBody TodoItem todoItem) {
+        TodoItem foundTodo = this.todoService.findById(todoItem.getId());
 
         foundTodo.setName(todoItem.getName());
         foundTodo.setDetails(todoItem.getDetails());
@@ -57,13 +55,13 @@ public class TodoController {
 
         this.todoService.createOrUpdate(foundTodo);
 
-        return new ResponseEntity<String>("Todo item updated", HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTodo(@PathVariable Long id) {
+    public void deleteTodo(@PathVariable Long id) {
         TodoItem foundTodo = this.todoService.findById(id);
-        this.todoService.deleteItem(id);
-        return new ResponseEntity<String>("Todo item deleted", HttpStatus.OK);
+        this.todoService.deleteItem(foundTodo.getId());
+//        return new ResponseEntity<String>("{status: \"success\"}", HttpStatus.OK);
     }
 }

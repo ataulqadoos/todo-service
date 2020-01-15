@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -48,4 +50,34 @@ public class TodoItem {
     @Getter @Setter
     @ApiModelProperty("Completed at")
     private LocalDateTime completedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TodoItem todoItem = (TodoItem) o;
+        return id == todoItem.id &&
+                done == todoItem.done &&
+                Objects.equals(name, todoItem.name) &&
+                Objects.equals(details, todoItem.details) &&
+                Objects.equals(scheduledDateTime, todoItem.scheduledDateTime) &&
+                Objects.equals(completedAt, todoItem.completedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, details, done, scheduledDateTime, completedAt);
+    }
+
+    @Override
+    public String toString() {
+        return "TodoItem{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", details='" + details + '\'' +
+                ", done=" + done +
+                ", scheduledDateTime=" + scheduledDateTime +
+                ", completedAt=" + completedAt +
+                '}';
+    }
 }
