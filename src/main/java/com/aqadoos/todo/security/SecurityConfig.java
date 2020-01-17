@@ -30,7 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         */
         http.authorizeRequests()
                 .mvcMatchers("/").permitAll()
-                .mvcMatchers("/todo/").hasAuthority("SCOPE_read:todo")
+                .mvcMatchers("/todo/").authenticated()
+                //.hasAnyAuthority("SCOPE_read:todo")
                 .and()
                 .oauth2ResourceServer().jwt();
     }
